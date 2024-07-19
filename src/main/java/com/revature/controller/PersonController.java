@@ -29,7 +29,6 @@ public class PersonController {
     };
 
     public Handler updatePersonHandler = ctx ->{
-        System.out.println("handle reached");
         try {
             Person person = ctx.bodyAsClass(Person.class);
             ctx.json(personService.updatePerson(person));
@@ -38,5 +37,17 @@ public class PersonController {
             e.printStackTrace();
             System.out.println("Update person sql failed");
         }
+    };
+
+    public Handler lengthOfCollectionsHandler = ctx -> {
+
+        try {
+            ctx.json(personService.lengthOfCollections());
+        } catch(SQLException e){
+            ctx.status(500);
+            e.printStackTrace();
+            System.out.println("Length of collections failed");
+        }
+
     };
 }

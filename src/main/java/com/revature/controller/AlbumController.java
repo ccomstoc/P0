@@ -61,7 +61,20 @@ public class AlbumController {
             System.out.println("Album already exists");
         }
 
+    };
 
+    public Handler deleteAlbumByIdHandler = ctx -> {
+
+        int album_id = Integer.parseInt(ctx.pathParam("id"));
+
+        try {
+            ctx.json(albumService.deleteAlbumById(album_id));
+            ctx.status(200);
+        }catch(SQLException e){
+            e.printStackTrace();
+            ctx.status(500);
+            System.out.println("Issue with deleting album");
+        }
 
     };
 }

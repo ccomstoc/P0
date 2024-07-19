@@ -30,9 +30,17 @@ public class Driver {
 
        app.post("/albums",albumController.insertAlbum);
 
+        app.delete("/albums/{id}",albumController.deleteAlbumByIdHandler);
+
+
+
        app.post("/person", personController.insertPersonHandler);
 
        app.put("/person", personController.updatePersonHandler);
+
+       app.get("/lengthLeaderboard", personController.lengthOfCollectionsHandler);
+
+
 
 
 

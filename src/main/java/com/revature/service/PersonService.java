@@ -2,9 +2,12 @@ package com.revature.service;
 
 import com.revature.DAO.PersonDAO;
 import com.revature.model.Person;
+import com.revature.model.TimeListenedDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
 
 public class PersonService {
 
@@ -19,5 +22,8 @@ public class PersonService {
     }
     public Person updatePerson(Person person) throws SQLException{
         return personDAO.updatePerson(person);
+    }
+    public ArrayList<TimeListenedDTO> lengthOfCollections() throws SQLException {
+        return personDAO.lengthOfCollections();
     }
 }

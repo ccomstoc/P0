@@ -1,8 +1,10 @@
 package com.revature.DAO;
 
 import com.revature.model.Person;
+import com.revature.model.TimeListenedDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class PersonDAO implements PersonDAOInterface {
 
@@ -61,8 +63,26 @@ public class PersonDAO implements PersonDAOInterface {
 
         return getPersonById(person.getPerson_id_pk());
 
+    }
+    public ArrayList<TimeListenedDTO> lengthOfCollections() throws SQLException {
+        PreparedStatement ps = con.prepareStatement(
+                "select person.person_id_pk,person.first_name,person.last_name,sum(album.duration)as length_of_collection\n" +
+                "from person,album,owns\n" +
+                "where person.person_id_pk =owns.person_id_fk and album.album_id_pk = owns.album_id_fk \n" +
+                "group by person.person_id_pk \n" +
+                "order by length_of_collection desc");
+        ResultSet rs = ps.executeQuery();
+        ArrayList<TimeListenedDTO> timeListenedDTOArrayList = new ArrayList<>();
+        while(rs.next()){
+            timeListenedDTOArrayList.add(new TimeListenedDTO(
+                    rs.getInt("person_id_pk"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("length_of_collection")
 
-
+            ));
+        }
+        return timeListenedDTOArrayList;
     }
 
 }

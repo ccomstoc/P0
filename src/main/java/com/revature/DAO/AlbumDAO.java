@@ -99,5 +99,31 @@ public class AlbumDAO implements AlbumDAOInterface {
         return album;
     }
 
+    public Album deleteAlbumById(int id) throws SQLException {
+        Album beingDeleted = getAlbumById(id);
+        PreparedStatement ps = con.prepareStatement("delete from album where album_id_pk = ? cascade");
+        ps.setInt(1,id);
+        ps.executeUpdate();
+        return beingDeleted;
+    }
+
+    public Album getAlbumById(int id) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("select * from album where album_id_pk = ?");
+        ps.setInt(1,id);
+        ResultSet rs = ps.executeQuery();
+        Album album = null;
+        while(rs.next()) {
+            album = new Album(
+                    rs.getInt("album_id_pk"),
+                    rs.getString("album_name"),
+                    rs.getString("artist_name"),
+                    rs.getInt("year_released"),
+                    rs.getString("duration")
+            );
+        }
+        return album;
+
+    }
+
 
 }

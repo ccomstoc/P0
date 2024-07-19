@@ -27,4 +27,8 @@ public class AlbumService {
         return albumDAO.insertAlbum(album);
     }
 
+    public Album deleteAlbumById(int id) throws SQLException {
+        return albumDAO.deleteAlbumById(id);
+    }
+
 }
