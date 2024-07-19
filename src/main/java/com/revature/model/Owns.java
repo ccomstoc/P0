@@ -8,8 +8,6 @@ public class Owns {
     private int person_id_fk;
     private int album_id_fk;
 
-    private Person person;
-    private Album album;
 
     public Owns(){
 
@@ -45,21 +43,6 @@ public class Owns {
         this.album_id_fk = album_id_fk;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Album getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(Album album) {
-        this.album = album;
-    }
 
     @Override
     public String toString() {
@@ -67,8 +50,6 @@ public class Owns {
                 "owns_index_pk=" + owns_index_pk +
                 ", person_id_fk=" + person_id_fk +
                 ", album_id_fk=" + album_id_fk +
-                ", person=" + person +
-                ", album=" + album +
                 '}';
     }
 
@@ -77,11 +58,11 @@ public class Owns {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Owns owns = (Owns) o;
-        return owns_index_pk == owns.owns_index_pk && person_id_fk == owns.person_id_fk && album_id_fk == owns.album_id_fk && Objects.equals(person, owns.person) && Objects.equals(album, owns.album);
+        return owns_index_pk == owns.owns_index_pk && person_id_fk == owns.person_id_fk && album_id_fk == owns.album_id_fk;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(owns_index_pk, person_id_fk, album_id_fk, person, album);
+        return Objects.hash(owns_index_pk, person_id_fk, album_id_fk);
     }
 }
