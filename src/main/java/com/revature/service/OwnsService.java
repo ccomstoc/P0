@@ -1,4 +1,5 @@
 package com.revature.service;
+import com.revature.exceptions.UnfoundIdException;
 import com.revature.model.Owns;
 
 import com.revature.DAO.OwnsDAO;
@@ -14,7 +15,7 @@ public class OwnsService {
         ownsDAO = new OwnsDAO(con);
     }
 
-    public Owns insertOwnsRelationship(Owns owns) throws SQLException {
+    public Owns insertOwnsRelationship(Owns owns) throws SQLException, UnfoundIdException {
 
         return ownsDAO.insertOwnsRelationship(owns);
 

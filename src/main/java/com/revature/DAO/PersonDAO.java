@@ -1,5 +1,7 @@
 package com.revature.DAO;
 
+import com.revature.exceptions.CannotBeNullException;
+import com.revature.exceptions.UnfoundIdException;
 import com.revature.model.Person;
 import com.revature.model.TimeListenedDTO;
 
@@ -15,7 +17,10 @@ public class PersonDAO implements PersonDAOInterface {
 
 
 
-    public Person insertPerson(Person person) throws SQLException {
+    public Person insertPerson(Person person) throws SQLException, CannotBeNullException {
+
+        if(person.getFirst_name() == null || person.getLast_name() == null)
+            throw new CannotBeNullException("First and last name must be not null");
 
         PreparedStatement ps = con.prepareStatement("insert into person(first_name,last_name) values(?,?)RETURNING person_id_pk");
         ps.setString(1,person.getFirst_name());
@@ -47,9 +52,12 @@ public class PersonDAO implements PersonDAOInterface {
     }
 
     @Override
-    public Person updatePerson(Person person) throws SQLException {
-        PreparedStatement ps;
+    public Person updatePerson(Person person) throws SQLException, UnfoundIdException {
 
+        if(getPersonById(person.getPerson_id_pk()) == null)
+            throw new UnfoundIdException("Either you did not enter an ID, or the one you entered cannot be found");
+
+        PreparedStatement ps;
         if(person.getFirst_name() != null) {
             ps = con.prepareStatement("update person set first_name = ? where person_id_pk = ?");
             ps.setInt(2,person.getPerson_id_pk());

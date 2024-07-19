@@ -28,7 +28,7 @@ public class Driver {
                 .get("/", ctx -> ctx.result("Hello Postman!"));
 
 
-        app.put("/login", authController.loginHandler);
+            app.put("/login", authController.loginHandler);
 
 
             app.get("/albums", albumController.getAlbumsHandler);
@@ -52,7 +52,10 @@ public class Driver {
 
 
 
-
-
     }
+
+
+
+
+
 }

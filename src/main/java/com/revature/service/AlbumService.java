@@ -2,6 +2,7 @@ package com.revature.service;
 
 import com.revature.DAO.AlbumDAO;
 import com.revature.exceptions.AlbumAlreadyExistsException;
+import com.revature.exceptions.UnfoundIdException;
 import com.revature.model.Album;
 
 
@@ -20,14 +21,14 @@ public class AlbumService {
     public ArrayList<Album> getAllAlbums() throws SQLException {
         return albumDAO.getAllAlbums();
     }
-    public ArrayList<Album> getAlbumsByPersonId(int userId) throws SQLException {
+    public ArrayList<Album> getAlbumsByPersonId(int userId) throws SQLException, UnfoundIdException {
         return albumDAO.getAlbumsByPersonId(userId);
     }
     public Album insertAlbum(Album album) throws SQLException, AlbumAlreadyExistsException {
         return albumDAO.insertAlbum(album);
     }
 
-    public Album deleteAlbumById(int id) throws SQLException {
+    public Album deleteAlbumById(int id) throws SQLException, UnfoundIdException {
         return albumDAO.deleteAlbumById(id);
     }
 

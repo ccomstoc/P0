@@ -7,7 +7,7 @@ import com.revature.service.AuthService;
 import io.javalin.http.Handler;
 import jakarta.servlet.http.HttpSession;
 
-public class AuthController {
+public class AuthController extends Controller{
 
 
     //Instantiate the AuthService to use the login() method
@@ -34,7 +34,7 @@ public class AuthController {
             ses.setAttribute("last_name", loggedInPerson.getLast_name());
 
 
-            System.out.println(ses.getAttribute("first_name"));
+            log.info("{} logged in", ses.getAttribute("first_name"));
 
 
 
@@ -42,13 +42,21 @@ public class AuthController {
             ctx.json(loggedInPerson);
 
         } else {
+            log.warn("Invalid Credentials");
+            ctx.status(401);
             ses = null;
         }
     };
 
     public Handler logoutHandler = ctx -> {
 
+        if(AuthController.ses == null){
+            ctx.status(401);
+            return;
+        }
+        log.info("{} logged out", ses.getAttribute("first_name"));
         ses.invalidate();
+        ses = null;
 
     };
 }

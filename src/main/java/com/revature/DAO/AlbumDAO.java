@@ -1,6 +1,7 @@
 package com.revature.DAO;
 
 import com.revature.exceptions.AlbumAlreadyExistsException;
+import com.revature.exceptions.UnfoundIdException;
 import com.revature.model.Album;
 import org.postgresql.util.PGInterval;
 
@@ -37,7 +38,11 @@ public class AlbumDAO implements AlbumDAOInterface {
     }
 
     @Override
-    public ArrayList<Album> getAlbumsByPersonId(int userId) throws SQLException {
+    public ArrayList<Album> getAlbumsByPersonId(int personId) throws SQLException, UnfoundIdException {
+
+        PersonDAO p = new PersonDAO(con);
+        if(p.getPersonById(personId) == null)
+            throw new UnfoundIdException("Person ID does not exsit");
 
         ArrayList<Album> albumArray = new ArrayList<>();
         PreparedStatement ps = con.prepareStatement("select album_id_pk,album_name,artist_name,year_released,duration \n" +
@@ -45,7 +50,7 @@ public class AlbumDAO implements AlbumDAOInterface {
                 "where person.person_id_pk = ? " +
                 "and person.person_id_pk = owns.person_id_fk " +
                 "and album.album_id_pk = owns.album_id_fk;");
-        ps.setInt(1,userId);
+        ps.setInt(1,personId);
         ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -103,7 +108,11 @@ public class AlbumDAO implements AlbumDAOInterface {
         return album;
     }
 
-    public Album deleteAlbumById(int id) throws SQLException {
+    public Album deleteAlbumById(int id) throws SQLException, UnfoundIdException {
+
+        if(getAlbumById(id) == null)
+            throw new UnfoundIdException("Album ID does not exsit");
+
         Album beingDeleted = getAlbumById(id);
         //Removes entry's in owns, if an album doesn't exist, you cant own it
         PreparedStatement ps = con.prepareStatement("delete from owns where album_id_fk = ?");
