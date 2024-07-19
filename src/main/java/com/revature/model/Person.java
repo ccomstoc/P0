@@ -14,6 +14,12 @@ public class Person {
 
     }
 
+    //For use with login
+    public Person(String first_name, String last_name) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+
     public Person(int person_id_pk, String first_name, String last_name) {
         this.person_id_pk = person_id_pk;
         this.first_name = first_name;

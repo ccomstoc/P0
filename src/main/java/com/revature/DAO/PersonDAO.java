@@ -17,14 +17,16 @@ public class PersonDAO implements PersonDAOInterface {
 
     public Person insertPerson(Person person) throws SQLException {
 
-        PreparedStatement ps = con.prepareStatement("insert into person(first_name,last_name) values(?,?)");
+        PreparedStatement ps = con.prepareStatement("insert into person(first_name,last_name) values(?,?)RETURNING person_id_pk");
         ps.setString(1,person.getFirst_name());
         ps.setString(2, person.getLast_name());
-        ps.executeUpdate();
 
-//        //Used for obtaining generated primary key, and returning with the json
-//        ResultSet keys = ps.getGeneratedKeys();
-//        person.setPerson_id_pk(keys.getInt(1));
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int id = rs.getInt("person_id_pk");
+            person.setPerson_id_pk(id); // Assuming Album class has a setId method
+        }
+
         return person;
     }
 

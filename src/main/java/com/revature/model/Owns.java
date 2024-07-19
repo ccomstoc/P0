@@ -11,6 +11,10 @@ public class Owns {
     private Person person;
     private Album album;
 
+    public Owns(){
+
+    }
+
     public Owns(int owns_index_pk, int person_id_fk, int album_id_fk) {
         this.owns_index_pk = owns_index_pk;
         this.person_id_fk = person_id_fk;

@@ -90,18 +90,27 @@ public class AlbumDAO implements AlbumDAOInterface {
 
         }
 
-        PreparedStatement ps = con.prepareStatement("insert into album(album_name,artist_name,year_released,duration) values(?,?,?,?);");
+        PreparedStatement ps = con.prepareStatement("insert into album(album_name,artist_name,year_released,duration) values(?,?,?,?) RETURNING album_id_pk;");
         ps.setString(1,album.getAlbum_name());
         ps.setString(2, album.getArtist_name());
         ps.setInt(3,album.getYear_released());
         ps.setObject(4,new PGInterval(album.getDuration()));
-        ps.executeUpdate();
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            int id = rs.getInt("album_id_pk");
+            album.setAlbum_id_pk(id); // Assuming Album class has a setId method
+        }
         return album;
     }
 
     public Album deleteAlbumById(int id) throws SQLException {
         Album beingDeleted = getAlbumById(id);
-        PreparedStatement ps = con.prepareStatement("delete from album where album_id_pk = ? cascade");
+        //Removes entry's in owns, if an album doesn't exist, you cant own it
+        PreparedStatement ps = con.prepareStatement("delete from owns where album_id_fk = ?");
+        ps.setInt(1,id);
+        ps.executeUpdate();
+        //Remove the album
+        ps = con.prepareStatement("delete from album where album_id_pk = ?");
         ps.setInt(1,id);
         ps.executeUpdate();
         return beingDeleted;
