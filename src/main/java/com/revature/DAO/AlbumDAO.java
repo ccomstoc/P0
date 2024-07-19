@@ -1,6 +1,8 @@
 package com.revature.DAO;
 
+import com.revature.exceptions.AlbumAlreadyExistsException;
 import com.revature.model.Album;
+import org.postgresql.util.PGInterval;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class AlbumDAO implements AlbumDAOInterface {
     return albumArray;
     }
 
+    @Override
     public ArrayList<Album> getAlbumsByPersonId(int userId) throws SQLException {
 
         ArrayList<Album> albumArray = new ArrayList<>();
@@ -59,5 +62,42 @@ public class AlbumDAO implements AlbumDAOInterface {
 
         return albumArray;
     }
+    @Override
+    public Album getAlbumByNameAndArtist(String albumName, String artistName) throws SQLException{
+        PreparedStatement ps = con.prepareStatement("select * from album where album_name = ? and artist_name = ?");
+        ps.setString(1,albumName);
+        ps.setString(2,artistName);
+        ResultSet rs = ps.executeQuery();
+        Album album = null;
+        while(rs.next()) {
+            album = new Album(
+                    rs.getInt("album_id_pk"),
+                    rs.getString("album_name"),
+                    rs.getString("artist_name"),
+                    rs.getInt("year_released"),
+                    rs.getString("duration")
+            );
+        }
+        return album;
+    }
+
+    @Override
+    public Album insertAlbum(Album album) throws SQLException, AlbumAlreadyExistsException {
+
+        //check if album already exsists
+        if(getAlbumByNameAndArtist(album.getAlbum_name(),album.getArtist_name()) != null){
+            throw new AlbumAlreadyExistsException("The Album you are trying to insert already exsits!");
+
+        }
+
+        PreparedStatement ps = con.prepareStatement("insert into album(album_name,artist_name,year_released,duration) values(?,?,?,?);");
+        ps.setString(1,album.getAlbum_name());
+        ps.setString(2, album.getArtist_name());
+        ps.setInt(3,album.getYear_released());
+        ps.setObject(4,new PGInterval(album.getDuration()));
+        ps.executeUpdate();
+        return album;
+    }
+
 
 }

@@ -9,6 +9,10 @@ public class Person {
     private String first_name;
     private String last_name;
 
+    public Person(){
+
+    }
+
     public Person(int person_id_pk, String first_name, String last_name) {
         this.person_id_pk = person_id_pk;
         this.first_name = first_name;

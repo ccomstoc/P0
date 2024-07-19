@@ -8,17 +8,28 @@ public class Album {
     private String album_name;
     private String artist_name;
     private int year_released;
-    private String duration; //Format of postgres interval: '3 hours 2 minutes 1 second'
+    private String duration;
 
-    public Album(){
+    //Format of postgres interval: '3 hours 2 minutes 1 second'
+
+    public Album(){ // Default constructor for use with json conversions
 
     }
+
     public Album(int album_id_pk, String album_name, String artist_name, int year_released, String duration) {
         this.album_id_pk = album_id_pk;
         this.album_name = album_name;
         this.artist_name = artist_name;
         this.year_released = year_released;
         this.duration = duration;
+    }
+
+    //No id, for use when inserting, because id is serial
+    public Album(String artist_name, String album_name, String duration, int year_released) {
+        this.artist_name = artist_name;
+        this.album_name = album_name;
+        this.duration = duration;
+        this.year_released = year_released;
     }
 
     public int getAlbum_id_pk() {

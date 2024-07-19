@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import com.revature.DAO.AlbumDAO;
+import com.revature.exceptions.AlbumAlreadyExistsException;
 import com.revature.model.Album;
 
 
@@ -21,6 +22,9 @@ public class AlbumService {
     }
     public ArrayList<Album> getAlbumsByPersonId(int userId) throws SQLException {
         return albumDAO.getAlbumsByPersonId(userId);
+    }
+    public Album insertAlbum(Album album) throws SQLException, AlbumAlreadyExistsException {
+        return albumDAO.insertAlbum(album);
     }
 
 }
